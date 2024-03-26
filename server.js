@@ -9,8 +9,19 @@ app.get('/hello', (req, res) => {
 })
 
 app.get('/api/weather', async (req, res) => {
+    let lat = req.query.lat
+    let lon = req.query.lon
+    let APIkey = 'cc27a8d46f99850e0959f18b5fe7a4b4'
+    let resWeather = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&lang=ru`)
+    let resWeatherJson = await resWeather.json()
     res.json({
-        'temp': - 273
+      'city': resWeatherJson.name,
+      'weather': resWeatherJson.weather[0].description,
+      'temp': resWeatherJson.main.temp,
+      'humidity': resWeatherJson.main.humidity,
+      'pressure': resWeatherJson.main.pressure,
+      'speed': resWeatherJson.wind.speed,
+      'icon': resWeatherJson.weather[0].icon
     })
   })
 
